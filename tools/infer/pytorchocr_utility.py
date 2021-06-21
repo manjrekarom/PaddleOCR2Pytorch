@@ -16,9 +16,10 @@ def parse_args():
     # parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     # parser.add_argument("--use_fp16", type=str2bool, default=False)
     parser.add_argument("--gpu_mem", type=int, default=500)
-
-    # params for text detector
+    # pick images from
     parser.add_argument("--image_dir", type=str)
+    # parser.add_argument("--save_image_dir", type=str)
+    # params for text detector
     parser.add_argument("--det_algorithm", type=str, default='DB')
     parser.add_argument("--det_model_path", type=str)
     parser.add_argument("--det_limit_side_len", type=float, default=960)
@@ -96,6 +97,12 @@ def parse_args():
     parser.add_argument("--rec_yaml_path", type=str, default=None)
     parser.add_argument("--cls_yaml_path", type=str, default=None)
     parser.add_argument("--e2e_yaml_path", type=str, default=None)
+    # output image with annotations
+    parser.add_argument("--output_images", action='store_true')
+    parser.add_argument("--output_images_path", type=str, default='./inference_results/')
+    # output bounding boxes and transcription in json format
+    parser.add_argument("--output_json", action='store_true')
+    parser.add_argument("--output_json_path", type=str, default=None)
 
     return parser.parse_args()
 
