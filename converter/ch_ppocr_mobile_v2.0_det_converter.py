@@ -50,6 +50,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--src_model_path", type=str, help='Assign the paddleOCR trained model(best_accuracy)')
+    parser.add_argument("--model_name", type=str, help='The model name "inference".pdi... or "best_accuracy".pdi...', default='best_accuracy')
     args = parser.parse_args()
 
     cfg = {'model_type':'det',
@@ -58,7 +59,7 @@ if __name__ == '__main__':
            'Backbone':{'name':'MobileNetV3', 'model_name':'large', 'scale':0.5, 'disable_se':True},
            'Neck':{'name':'DBFPN', 'out_channels':96},
            'Head':{'name':'DBHead', 'k':50}}
-    paddle_pretrained_model_path = os.path.join(os.path.abspath(args.src_model_path), 'best_accuracy')
+    paddle_pretrained_model_path = os.path.join(os.path.abspath(args.src_model_path), args.model_name)
     converter = MobileV20DetConverter(cfg, paddle_pretrained_model_path)
 
     print('todo')

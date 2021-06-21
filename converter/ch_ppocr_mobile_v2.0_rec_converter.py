@@ -67,6 +67,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--src_model_path", type=str, help='Assign the paddleOCR trained model(best_accuracy)')
+    parser.add_argument("--model_name", type=str, help='The model name "inference".pdi... or "best_accuracy".pdi...', default='best_accuracy')
     args = parser.parse_args()
 
     cfg = {'model_type':'rec',
@@ -75,7 +76,7 @@ if __name__ == '__main__':
            'Backbone':{'model_name':'small', 'name':'MobileNetV3', 'scale':0.5, 'small_stride':[1,2,2,2]},
            'Neck':{'name':'SequenceEncoder', 'hidden_size':48, 'encoder_type':'rnn'},
            'Head':{'name':'CTCHead', 'fc_decay': 4e-05}}
-    paddle_pretrained_model_path = os.path.join(os.path.abspath(args.src_model_path), 'best_accuracy')
+    paddle_pretrained_model_path = os.path.join(os.path.abspath(args.src_model_path), args.model_name)
     converter = ServerV20RecConverter(cfg, paddle_pretrained_model_path)
 
     # image = cv2.imread('images/Snipaste.jpg')
