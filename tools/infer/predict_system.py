@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
@@ -165,6 +166,28 @@ def main(args):
                 draw_img[:, :, ::-1])
             print("The visualized image saved in {}".format(
                 os.path.join(draw_img_save, os.path.basename(image_file))))
+
+        if (args.output_json or args.output_json_path) is not None:
+            json_dir = args.output_json_path or './inference_results/'
+            if not os.path.exists(json_dir):
+                os.makedirs(json_dir)
+            json_path = os.path.join(json_dir, os.path.basename(image_file) + '.json')
+            # info
+            boxes = [box.tolist() for box in dt_boxes]
+            txts = [rec_res[i][0] for i in range(len(rec_res))]
+            scores = [float(rec_res[i][1]) for i in range(len(rec_res))]
+            # dictionary
+            result = {}
+            result['img_info'] = {}
+            result['img_info']['filepath'] = image_file
+            result['img_info']['width'] = img.shape[1]
+            result['img_info']['height'] = img.shape[0]
+            result['boxes'] = boxes
+            result['texts'] = txts
+            result['scores'] = scores
+            # write
+            with open(json_path, 'w+') as f:
+                json.dump(result, f)
 
 
 if __name__ == '__main__':
